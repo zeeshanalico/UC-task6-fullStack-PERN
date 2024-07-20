@@ -2,8 +2,7 @@
 ## Prerequisites
 
 - Node.js and npm installed
-- A live server extension for serving the frontend (e.g., Live Server for VSCode)
-- Postgres DB
+- Postgres DB installed
 - 
 ## Overview
 
@@ -23,9 +22,15 @@ create -U username -c "dbname"
 psql -U username dbname < backup.sql
 ```
 
-Install the dependencies
+Install the dependencies at backend
 ```bash
 cd server
+npm install
+```
+
+Install the dependencies at frontend
+```bash
+cd client
 npm install
 ```
 add a config.env file in server directory with given properties like 
