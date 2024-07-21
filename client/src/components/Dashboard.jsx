@@ -2,8 +2,11 @@ import { useEffect, useState, useRef } from 'react';
 import api from '../api/api.js';
 import Modal from './Modal.jsx';
 import Item from './Item.jsx';
+import { useOutlet, useOutletContext,useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
+  const { role } = useOutletContext()
+  console.log(role);
   const [list, setList] = useState([]);
   const [status, setStatus] = useState('show'); // show|hide
   const [checkedItems, setCheckedItems] = useState([]);
@@ -11,6 +14,7 @@ const Dashboard = () => {
   const createModalRef = useRef(null);
   const updateModalRef = useRef(null);
 
+  const navigate=useNavigate()
   const fetchData = async () => {
     setList(await api.getItems());
 
@@ -18,15 +22,15 @@ const Dashboard = () => {
 
   useEffect(() => {
     fetchData();
-  //   const masterCheckBox = document.querySelector('#master-checkbox');
-  //  const currentStatusList= list.filter(item => item.status === status)
-  //  console.log(currentStatusList.length);
+    //   const masterCheckBox = document.querySelector('#master-checkbox');
+    //  const currentStatusList= list.filter(item => item.status === status)
+    //  console.log(currentStatusList.length);
 
-  //   if (currentStatusList.length == 0) {
-  //     masterCheckBox.disabled = true;
-  //   } else {
-  //     masterCheckBox.disabled = false;
-  //   }
+    //   if (currentStatusList.length == 0) {
+    //     masterCheckBox.disabled = true;
+    //   } else {
+    //     masterCheckBox.disabled = false;
+    //   }
   }, []);
 
   const deleteHandler = async (id) => {
@@ -109,6 +113,11 @@ const Dashboard = () => {
     }
   };
 
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate('/', {replace:true})
+    
+  }
   return (
     <>
       <div className='d-flex flex-row'>
@@ -122,11 +131,14 @@ const Dashboard = () => {
           : <button onClick={() => statusChangeHandler('hide-to-show')} className='m-2 btn btn-outline-primary'>Add to Show</button>}
 
 
-        <button type="button" className="btn btn-outline-info m-2 me-4 ms-auto " data-bs-toggle="modal"
+        {(role.role == 'ADMIN' || role.role === 'CREATOR') && (<button type="button" className="btn btn-outline-info m-2 me-4 ms-auto " data-bs-toggle="modal"
           data-bs-target="#createModal">
           + Add
-        </button>
-
+        </button>)}
+          <svg onClick={handleLogout} xmlns="http://www.w3.org/2000/svg" width="32" height="32"  fill="red" className="bi bi-power mt-2 me-4 ms-auto" viewBox="0 0 16 16">
+            <path d="M7.5 1v7h1V1z" />
+            <path d="M3 8.812a5 5 0 0 1 2.578-4.375l-.485-.874A6 6 0 1 0 11 3.616l-.501.865A5 5 0 1 1 3 8.812" />
+          </svg>
       </div>
 
       <table className='table'>
@@ -136,14 +148,14 @@ const Dashboard = () => {
             <td className='text-dark'>Title</td>
             <td className='text-dark'>Duration</td>
             <td className='text-dark'>Link</td>
-            <td className='text-dark'>Edit</td>
-            <td className='text-dark'>Delete</td>
+            {(role.role === 'ADMIN' || role.role === 'EDITOR') && <td className='text-dark'>Edit</td>}
+            {(role.role === 'ADMIN') && <td className='text-dark'>Delete</td>}
           </tr>
         </thead>
         <tbody>
           {list
             .filter(item => item.status === status)
-            .map(item => <Item key={item.id} item={item} handleCheckedItems={handleCheckedItems} editHandler={editHandler} deleteHandler={deleteHandler} />)
+            .map(item => <Item key={item.id} item={item} handleCheckedItems={handleCheckedItems} editHandler={editHandler} deleteHandler={deleteHandler} role={role} />)
           }
         </tbody>
       </table>
