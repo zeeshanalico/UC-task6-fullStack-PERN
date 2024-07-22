@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import api from '../api/api.js';
 import Modal from './Modal.jsx';
 import Item from './Item.jsx';
-import { useOutlet, useOutletContext, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
   const { role } = useOutletContext()
@@ -13,6 +13,8 @@ const Dashboard = () => {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const masterCheckBox = useRef()
+  const checkBoxesRef = useRef([]);
+
   const navigate = useNavigate()
 
   const fetchData = async () => {
@@ -30,9 +32,7 @@ const Dashboard = () => {
   };
 
   const handleCheckedItems = (e, id) => {
-    const checkboxes = document.querySelectorAll('.item-checkbox');
-    // const masterCheckBox = document.querySelector('#master-checkbox');
-    const allIsChecked = Array.from(checkboxes).every(checkbox => checkbox.checked === true);
+    const allIsChecked = Array.from(checkBoxesRef.current).every(checkbox => checkbox.checked === true);
     if (allIsChecked) {
       masterCheckBox.current.checked = true;
     } else {
@@ -42,16 +42,15 @@ const Dashboard = () => {
     if (e.target.checked) {
       setCheckedItems(prevState => [...prevState, id]);
     } else {
-      setCheckedItems(prevState => prevState.filter(item => item !== id));
+      setCheckedItems(prevState => prevState?.filter(item => item !== id));
     }
   };
 
   const handleMasterCheck = (e) => {
     const isChecked = e.target.checked;
-    const allCheckboxes = document.querySelectorAll('.item-checkbox');
-    const itemIds = list.filter(item => item.status === status).map(item => item.id);
+    const itemIds = list?.filter(item => item.status === status).map(item => item.id);
 
-    allCheckboxes.forEach(checkbox => {
+    checkBoxesRef?.current?.forEach(checkbox => {
       checkbox.checked = isChecked;
     });
 
@@ -81,6 +80,7 @@ const Dashboard = () => {
     try {
       if (action === 'create') {
         const response = await api.createItem(title, duration, link, status);
+        setSelectedItem(null)
         setShowCreateModal(false)
       } else if (action === 'update') {
         const response = await api.updateItem(id, title, duration, link);
@@ -98,13 +98,16 @@ const Dashboard = () => {
     navigate('/', { replace: true })
 
   }
+
+  const onSwitchList = e => {
+    masterCheckBox.current.checked = false;
+    setStatus(e.target.value)
+    setCheckedItems([])
+  }
   return (
     <>
       <div className='d-flex flex-row'>
-        <select className='form-select w-25 m-2' onChange={e => {
-          masterCheckBox.current.checked = false;
-          setStatus(e.target.value)
-        }}>
+        <select className='form-select w-25 m-2' onChange={onSwitchList}>
 
           <option value="show">Show List</option>
           <option value="hide">Hide List</option>
@@ -137,8 +140,8 @@ const Dashboard = () => {
         </thead>
         <tbody>
           {list
-            .filter(item => item.status === status)
-            .map(item => <Item key={item.id} item={item} handleCheckedItems={handleCheckedItems} editHandler={editHandler} deleteHandler={deleteHandler} role={role} setShowUpdateModal={setShowUpdateModal} />)
+            ?.filter(item => item.status === status)
+            ?.map((item, keyID) => <Item key={item.id} item={item} handleCheckedItems={handleCheckedItems} editHandler={editHandler} deleteHandler={deleteHandler} role={role} setShowUpdateModal={setShowUpdateModal} keyID={keyID} ref={checkBoxesRef} />)
           }
         </tbody>
       </table>

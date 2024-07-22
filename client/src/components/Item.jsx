@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import durationUtil from '../utils/durationUtil.js'
 
-const Item = ({ item, handleCheckedItems, editHandler, deleteHandler, role }) => {
+const Item = forwardRef(({ item, handleCheckedItems, editHandler, deleteHandler, keyID, role }, ref) => {
     const { id, title, duration, link } = item;
     return (
         <tr key={id}>
-            <td><input type="checkbox" className='form-check-input item-checkbox' onChange={(e) => handleCheckedItems(e, id)} /></td>
+            <td><input type="checkbox" className='form-check-input item-checkbox' onChange={(e) => handleCheckedItems(e, id)} ref={element => ref.current[keyID] = element} /></td>
             <td>{title}</td>
             <td>{durationUtil.Duration(duration)}</td>
             <td>{link}</td>
@@ -23,6 +23,6 @@ const Item = ({ item, handleCheckedItems, editHandler, deleteHandler, role }) =>
             </td>}
         </tr>
     );
-};
+})
 
 export default Item;
