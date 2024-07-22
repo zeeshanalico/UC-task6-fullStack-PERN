@@ -51,8 +51,9 @@ const Dashboard = ({ role }) => {
     const itemIds = list?.filter(item => item.status === status).map(item => item.id);
 
     checkBoxesRef?.current?.forEach(checkbox => {
-      checkbox.checked = isChecked;
-    });
+      if(checkbox){
+        checkbox.checked  = isChecked;
+      }    });
 
     if (isChecked) {
       setCheckedItems(itemIds);
