@@ -16,7 +16,7 @@ const generateJWTtoken = (user) => {//encode user in token
 const getUser = db => async (email) => {
     try {
         const result = await db.query(getUserQuery, [email]);
-        return result.rows[0]
+        return result.rows[0] // undefined|{}
     } catch (err) {
         console.error(err);
     }
@@ -28,7 +28,7 @@ const signup = db => async (req, res) => {
     if (!username.trim() || !password.trim() || !email.trim()) {
         res.status(400).send({ success: false, message: 'Please fill all the fields', success: false, result: null })//400:bad request
     } else {
-        const user = getUser(email);
+        const user = await getUser(db)(email);
         if (user) {
             res.send({ message: 'User already exist with this email', success: false, result: null })
             return;
@@ -54,9 +54,9 @@ const login = db => async (req, res) => {
         res.send({ success: false, message: 'Email or password is missing' })
     }
     try {
-        const user = getUser(email);
-        console.log(user);
+        const user =await getUser(db)(email);
         if (user) {//undefined|{, ,}
+            console.log(password,user);
             bcrypt.compare(password, user.password, function (err, result) {
                 if (err) {
                     console.log(err);

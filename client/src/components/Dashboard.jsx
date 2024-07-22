@@ -4,8 +4,8 @@ import Modal from './Modal.jsx';
 import Item from './Item.jsx';
 import { useOutlet, useOutletContext, useNavigate } from 'react-router-dom';
 
-const Dashboard = ({role}) => {
-  // const { role } = useOutletContext()
+const Dashboard = () => {
+  const { role } = useOutletContext()
   const [list, setList] = useState([]);
   const [status, setStatus] = useState('show'); // show|hide
   const [checkedItems, setCheckedItems] = useState([]);
@@ -76,7 +76,6 @@ const Dashboard = ({role}) => {
   };
 
   const submitHandle = async (e, action, currentItem) => {
-    console.log('submit handler called');
     e.preventDefault();
     const { id, title, duration, link, status } = currentItem;
     try {
