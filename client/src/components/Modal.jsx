@@ -5,7 +5,6 @@ import Modal from 'react-bootstrap/Modal';
 const ModalC = ({ idOfModal, action, item, submitHandle, show, setShow }) => {
     const [currentItem, setCurrentItem] = useState(item || {});
     const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
     useEffect(() => {
         setCurrentItem(item || {});
     }, [item]);
@@ -18,7 +17,10 @@ const ModalC = ({ idOfModal, action, item, submitHandle, show, setShow }) => {
     return (
         <>
             <Modal show={show} onHide={handleClose} animation={false} id={idOfModal}>
-                <form id="form" onSubmit={(e) => submitHandle(e, action, currentItem)}>
+                <form id="form" onSubmit={(e) => {
+                    submitHandle(e, action, currentItem)
+                    setCurrentItem({})
+                }}>
                     <Modal.Header closeButton>
                         <Modal.Title>{action === 'create' ? 'Add new Item' : 'Update the Item'}</Modal.Title>
                     </Modal.Header>
