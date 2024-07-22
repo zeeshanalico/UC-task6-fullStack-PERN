@@ -1,8 +1,11 @@
 import React, { useState, useEffect, forwardRef } from 'react';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 
-const Modal = forwardRef(({ idOfModal, action, item, submitHandle }, ref) => {
+const ModalC = ({ idOfModal, action, item, submitHandle, show, setShow }) => {
     const [currentItem, setCurrentItem] = useState(item || {});
-
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
     useEffect(() => {
         setCurrentItem(item || {});
     }, [item]);
@@ -13,16 +16,13 @@ const Modal = forwardRef(({ idOfModal, action, item, submitHandle }, ref) => {
     };
 
     return (
-        <div className="modal fade" data-bs-keyboard="false" data-bs-backdrop="static" id={idOfModal} tabIndex="-1" aria-hidden="true" ref={ref}>
-            <div className="modal-dialog">
-                <div className="modal-content">
-                    <div className="modal-header">
-                        <h5 className="modal-title">
-                            {action === 'create' ? 'Add new Item' : 'Update the Item'}
-                        </h5>
-                        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <form id="form" onSubmit={(e) => submitHandle(e, action, currentItem)}>
+        <>
+            <Modal show={show} onHide={handleClose} animation={false} id={idOfModal}>
+                <form id="form" onSubmit={(e) => submitHandle(e, action, currentItem)}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>{action === 'create' ? 'Add new Item' : 'Update the Item'}</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
                         <div className="modal-body">
                             <input
                                 onChange={handleChange}
@@ -61,15 +61,19 @@ const Modal = forwardRef(({ idOfModal, action, item, submitHandle }, ref) => {
                                 aria-describedby="basic-addon1"
                             />
                         </div>
-                        <div className="modal-footer">
-                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <input type="submit" className="btn btn-primary" id="submitButton" value={action} />
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    );
-});
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={handleClose}>
+                            Close
+                        </Button>
+                        <Button type='submit' variant="primary">
+                            {action}
+                        </Button>
+                    </Modal.Footer>
+                </form>
+            </Modal>
+        </>
 
-export default Modal;
+    );
+}
+export default ModalC;

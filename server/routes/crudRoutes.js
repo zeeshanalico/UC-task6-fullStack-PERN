@@ -16,7 +16,7 @@ module.exports = (db) => {
             res.send({ success: false, message: 'Please fill all the fields' })
         } else {
             const query = 'insert into items_list(id, title, duration, link) values ($1,$2,$3,$4)';
-            await db.query(query, [generateUniqueID(), title, duration, link], (err, result) => {
+             db.query(query, [generateUniqueID(), title, duration, link], (err, result) => {
                 if (err) {
                     console.error('Error executing query', err);
                     res.status(500).send({ success: false, message: err.detail })
@@ -42,7 +42,7 @@ module.exports = (db) => {
             query = 'SELECT * FROM items_list';
             queryParams = [];
         }
-        await db.query(query, queryParams, (err, result) => {
+         db.query(query, queryParams, (err, result) => {
             if (err) {
                 console.error('Error executing query', err);
                 res.status(500).send({ success: false, message: err.detail })
@@ -58,7 +58,7 @@ module.exports = (db) => {
         console.log('/get:id');
         const id = req.params.id;
         const query = `select * from items_list where id = $1`;
-        await db.query(query, [id], (err, result) => {
+         db.query(query, [id], (err, result) => {
             if (err) {
                 console.error('Error executing query', err);
                 res.status(500).send({ success: false, message: err.detail })
@@ -75,7 +75,7 @@ module.exports = (db) => {
         const id = req.params.id;
         const { title, duration, link } = req.body
         const query = 'update items_list set title=$2, duration=$3, link=$4 where id = $1';
-        await db.query(query, [id, title, duration, link], (err, result) => {
+         db.query(query, [id, title, duration, link], (err, result) => {
             if (err) {
                 console.error('Error executing query', err);
                 res.status(500).send({ success: false, message: err.detail })
@@ -96,7 +96,7 @@ module.exports = (db) => {
 
         const id = req.params.id;
         const query = 'delete from  items_list where id = $1';
-        await db.query(query, [id], (err, result) => {
+         db.query(query, [id], (err, result) => {
             if (err) {
                 console.error('Error executing query', err);
                 res.status(500).send({ success: false, message: err.detail })
@@ -120,7 +120,7 @@ module.exports = (db) => {
         } else if (status == 'hide-to-show') {
             query = "update items_list set status = 'show' where id = $1";
         }
-        await db.query(query, [id], (err, result) => {
+         db.query(query, [id], (err, result) => {
             if (err) {
                 console.error('Error executing query', err);
                 res.status(500).send({ success: false, messge: err.detail })

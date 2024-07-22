@@ -31,34 +31,14 @@ const ROLES = [
   },
 ]
 
-// const routes = [
-//   {
-//     path: "/",
-//     element: <AuthProvider> <Dashboard /> </AuthProvider>
-//   },
-//   {
-//     path: "/signup",
-//     element: <SignUp />
-//   },
-//   {
-//     path: "/login",
-//     element: <Login />
-//   },
-//   {
-//     path: '*',
-//     element: <div>Page Not Found</div>
-//   }
-// ]
-{/* <RouterProvider router={router} /> */ }
-// const router = createBrowserRouter(routes);
-
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
 
     <BrowserRouter>
-        <Routes>
+      <Routes>
+        <Route path="/" element={<Dashboard role={ROLES[0]} />} />
 
-          <Route path="/">
+        {/* <Route path="/">
             <Route path="/" element={<Login />} />
             <Route path="signup" element={<SignUp />} />
             <Route path="unauthorized" element={<Unauthorized />} />
@@ -67,10 +47,10 @@ ReactDOM.createRoot(document.getElementById('root')).render(
 
           <Route path="/" element={<RequireAuth allowedRoles={ROLES} />}>
             <Route path="dashboard" element={<Dashboard />} />
-          </Route>
-          
-        </Routes>
-        <ToastContainer />
+          </Route> */}
+
+      </Routes>
+      <ToastContainer />
     </BrowserRouter>
 
   </React.StrictMode>,
