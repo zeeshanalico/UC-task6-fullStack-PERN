@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import api from '../api/api.js';
 import Modal from './Modal.jsx';
 import Item from './Item.jsx';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,useOutletContext } from 'react-router-dom';
 
 const Dashboard = () => {
   const { role } = useOutletContext()
@@ -51,7 +51,9 @@ const Dashboard = () => {
     const itemIds = list?.filter(item => item.status === status).map(item => item.id);
 
     checkBoxesRef?.current?.forEach(checkbox => {
-      checkbox.checked = isChecked;
+      if(checkbox){
+        checkbox.checked  = isChecked;
+      }
     });
 
     if (isChecked) {
