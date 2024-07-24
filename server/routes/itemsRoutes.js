@@ -9,7 +9,7 @@ const { createItem,
 const { verifyRole } = require('../utils/decodeToken.js')
 
 module.exports = (db) => {
-    router.post('/', verifyRole( "ADMIN", 'CREATOR'), createItem(db))
+    router.post('/', verifyRole( "ADMIN", 'CREATOR'),  createItem(db))
     router.get('/', verifyRole( "ADMIN", 'CREATOR', 'EDITOR'), getItems(db))
     router.get('/:id', verifyRole( "ADMIN", 'CREATOR', 'EDITOR'), getItem(db))
     router.put('/:id', verifyRole( "ADMIN", 'EDITOR'), updateItem(db))

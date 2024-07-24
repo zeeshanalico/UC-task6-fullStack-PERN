@@ -48,10 +48,12 @@ const signup = db => async (req, res) => {
 
 
 const login = db => async (req, res) => {
+    console.log(req.body);
     console.log('/login');
     const { password, email } = req.body
-    if ((!password && !password.trim()) || (!email && !email.trim())) {
+    if (!password || !password.trim() || !email || !email.trim()) {
         res.send({ success: false, message: 'Email or password is missing' })
+        return;
     }
     try {
         const user =await getUser(db)(email);
