@@ -24,7 +24,6 @@ import { useSelector } from 'react-redux';
 
 
 const AppRoutes = () => {
-  console.log('render  main/approuter');
   const { isAuthenticated,role, loading } = useSelector((state) => state.auth);//async
 
   return (

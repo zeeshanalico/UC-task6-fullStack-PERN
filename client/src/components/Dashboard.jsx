@@ -11,7 +11,6 @@ const Dashboard = () => {
   const dispatch = useDispatch()
   const items = useSelector(state => state.items)
   const {roleName} = useSelector((state) => state.auth.role);//async
-  console.log(roleName)
 
   const [list, setList] = useState([]);
   const [status, setStatus] = useState('show'); // show|hide
@@ -124,8 +123,6 @@ const Dashboard = () => {
           {status === 'show'
             ? <button onClick={() => statusChangeHandler('show-to-hide')} className='m-2 btn btn-outline-primary'>Add to Hide</button>
             : <button onClick={() => statusChangeHandler('hide-to-show')} className='m-2 btn btn-outline-primary'>Add to Show</button>}
-
-{console.log(roleName,"here")}
           {(roleName == 'ADMIN' || roleName === 'CREATOR') && (<button type="button" className="btn btn-outline-info m-2 me-4 ms-auto " onClick={() => setShowCreateModal(true)}>
             + Add
           </button>)}

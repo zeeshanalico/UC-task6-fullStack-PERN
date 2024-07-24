@@ -5,7 +5,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { loginAsync } from '../store/slices/asyncThunks/loginAsync.js';
 
 const Login = () => {
-  console.log('render login');
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { loading, error } = useSelector((state) => state.auth);

@@ -1,9 +1,17 @@
+## Note:this repo has three branches
+`main` : basic functionality
+
+`additional-features` : basic + additional functionality ,(frontend auth using nested routes)
+
+`additional-features-redux-thunk` : basic + additional functionality ,(frontend auth using redux + redux-thunk)
+
+
 
 ## Prerequisites
 
 - Node.js and npm installed
-- Postgres DB installed
-- 
+- PostgresSQL installed
+  
 ## Overview
 
 This project consists of two main  the client and the server. The client is a frontend application, while the server handles the backend logic and interacts with the database.
@@ -33,18 +41,26 @@ Install the dependencies at frontend
 cd client
 npm install
 ```
-add a config.env file in server directory with given properties like 
+## Environment Variables
+
+add a config.env file in server directory with the following environment variables
+
+`PORT` 
+`USER` 
+`DATABASE`
+`HOST`
+`PASSWORD`
+
+`DB_PORT` default port i.e 5432 
+
+`SECRET_KEY` any random string
+
+
+Start the backend server
 ```bash
-
-PORT=3000
-USER=username
-DATABASE=dbname
-HOST=localhost etc
-PASSWORD=******
-DB_PORT=default port i.e 5432 
+npm run start
 ```
-
-start the backend server
+Start the frontend
 ```bash
 npm run start
 ```
