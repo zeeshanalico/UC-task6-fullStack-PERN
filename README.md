@@ -15,7 +15,7 @@
 ## Overview
 
 This project consists of two main  the client and the server. The client is a frontend application, while the server handles the backend logic and interacts with the database.
-it also has a database directory with db.sql run execute that file in postgres db
+it also has a database directory with backup.sql run execute that file in postgres db
 
 ### Clone the Repository
 
