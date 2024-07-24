@@ -1,23 +1,12 @@
 import { toast } from 'react-toastify';
 import axios from 'axios'
+
 export const server_url = axios.create({
-    baseURL: import.meta.env.VITE_BASE_URL
+    baseURL: import.meta.env.VITE_BASE_URL,
 })
 
 
-const login = async (email, password) => {
-    if (!email || !password) {
-        return;
-    }
-    try {
-        const response = await server_url.post('/login');
-        return response.data;
-    } catch (error) {
-        console.error('Error fetching Items:', error);
-    }
-}
-
-const signup = async (username, email, password, cnfPassword) => {
+export const signup = async (username, email, password, cnfPassword) => {
     if (!username.trim() || !password.trim() || !cnfPassword.trim() || !email.trim()) {
         toast.warning('Please fill all the fields!')
         return;
@@ -42,4 +31,4 @@ const signup = async (username, email, password, cnfPassword) => {
     }
 }
 
-export default { signup, login };
+export default { signup };

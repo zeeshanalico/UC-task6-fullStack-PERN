@@ -1,8 +1,10 @@
 import axios from 'axios'
 const server_url = axios.create({
-    baseURL: import.meta.env.VITE_BASE_URL
+    baseURL: import.meta.env.VITE_BASE_URL,
+    headers: {
+        'authorization': `Bearer ${localStorage.getItem('token')}`
+    }
 })
-
 
 const getItems = async (status) => {
     if (status) {

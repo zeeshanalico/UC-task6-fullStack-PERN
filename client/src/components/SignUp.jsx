@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { Link } from 'react-router-dom'
-import authApi from "../api/authApi"
+import authApi from '../api/authApi.js'
 
 const SignUp = () => {
     const [user, setUser] = useState({ username: '', email: '', password: '', cnfPassword: '' })
