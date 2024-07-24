@@ -2,39 +2,37 @@ import React from 'react';
 import { toast } from 'react-toastify';
 import { useNavigate, Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { loginAsync } from '../store/slices/authSlice';
+import { loginAsync } from '../store/slices/asyncThunks/loginAsync.js';
 
 const Login = () => {
+  console.log('render login');
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { loading, error } = useSelector((state) => state.auth);
-
+  
   const [user, setUser] = React.useState({ email: '', password: '' });
-
+  
   const changeHandler = (e) => {
     const { name, value } = e.target;
     setUser((prevState) => ({ ...prevState, [name]: value }));
   };
-
+  
   const submitHandler = async (e) => {
     e.preventDefault();
-
+    
     if (!user.email.trim() || !user.password.trim()) {
       toast.error('Email or password is missing');
       return;
     }
+    
+    debugger;   
+    const resultAction = await dispatch(loginAsync(user));//it will return action
 
-    try {
-      const resultAction = await dispatch(loginAsync(user));
-
-      if (loginAsync.fulfilled.match(resultAction)) {
-        toast.success('Login successful');
-        navigate('/dashboard', { replace: true });
-      } else {
-        toast.error(resultAction.payload || 'Login failed');
-      }
-    } catch (error) {
-      toast.error('An unexpected error occurred');
+    if (loginAsync.fulfilled.match(resultAction)) {//matching the action of fullfilled with action we did
+      toast.success('Login successful');
+      navigate('/dashboard', { replace: true });
+    } else {
+      toast.error(resultAction.payload || 'Login failed');
     }
   };
 

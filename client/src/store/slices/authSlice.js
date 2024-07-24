@@ -1,33 +1,15 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axios from 'axios';
-export const server_url = axios.create({
-    baseURL: import.meta.env.VITE_BASE_URL,
-})
+import { createSlice } from '@reduxjs/toolkit';
+import { ROLES } from '../roles.js'
 
-// Async thunk for login
-export const loginAsync = createAsyncThunk(
-    'auth/loginAsync',
-    async ({ email, password }, { rejectWithValue }) => {//rejectedWithValue always goes to .rejected case 
-        if (!email || !password) {
-            return;
-        }
-        try {
-            const response = await server_url.post('/login', { email, password });
-            const { success, result, message } = response.data;
-            if (success) {
-                return result;
-            } else {
-                return rejectWithValue(message);
-            }
-        } catch (error) {            
-            return rejectWithValue(error.message || 'Something went wrong!');
-        }
-    }
-);
+import { loginAsync } from './asyncThunks/loginAsync.js'
+const verifyRole = role => {
+    const match = ROLES.find(r => r.roleName === role);
+    return match || false;
+}
 
 const initialState = {
     isAuthenticated: Boolean(localStorage.getItem('token')),//false/true
-    role: localStorage.getItem('role'),
+    role: verifyRole(localStorage.getItem('role')),
     user: null,
     loading: false,
     error: null,
@@ -54,12 +36,12 @@ export const authSlice = createSlice({
                 const { token, user } = action.payload;
                 localStorage.setItem('token', token);
                 localStorage.setItem('role', user.role || 'user');//change here
-                state.role = user.role;
+                state.role = user.role;//setting on role name like "ADMIN"
                 state.user = user;
                 state.isAuthenticated = true;
                 state.loading = false;
             })
-            .addCase(loginAsync.rejected, (state, action) => {
+            .addCase(loginAsync.rejected, (state, action) => {//get action from loginasyncThunk
                 state.loading = false;
                 state.error = action.payload || 'Login failed.';
             });

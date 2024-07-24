@@ -6,7 +6,7 @@ const server_url = axios.create({
     }
 })
 
-const getItems = async (status) => {
+export const getItems = async (status) => {
     if (status) {
         url += `?status=${status}`;
     }
@@ -18,7 +18,7 @@ const getItems = async (status) => {
     }
 }
 
-const createItem = async (title, duration, link, status) => {//further we have to modify only 4rth param as status to add in hide
+export const createItem = async (title, duration, link, status) => {//further we have to modify only 4rth param as status to add in hide
     if (!title || !duration || !link) {
         return;
     } try {
@@ -31,7 +31,7 @@ const createItem = async (title, duration, link, status) => {//further we have t
     }
 }
 
-const getItem = async (id) => {
+export const getItem = async (id) => {
     if (!id) return
     try {
 
@@ -44,7 +44,7 @@ const getItem = async (id) => {
     }
 }
 
-const updateItem = async (id, title, duration, link) => {
+export const updateItem = async (id, title, duration, link) => {
     if (!title || !duration || !link) {
         return;
     } try {
@@ -57,7 +57,7 @@ const updateItem = async (id, title, duration, link) => {
     }
 }
 
-const deleteItem = async (id) => {
+export const deleteItem = async (id) => {
     if (!id) return;
     try {
         const response = await server_url.delete(`/items/${id}`);
@@ -67,7 +67,7 @@ const deleteItem = async (id) => {
     }
 }
 
-const changeStatusOfItem = async (id, status) => {
+export const changeStatusOfItem = async (id, status) => {
     if (!id) return
     try {
         const response = await server_url.patch(`/items/${id}`, { status }, {
@@ -80,4 +80,3 @@ const changeStatusOfItem = async (id, status) => {
     }
 }
 
-export default { getItems, createItem, deleteItem, getItem, changeStatusOfItem, updateItem };

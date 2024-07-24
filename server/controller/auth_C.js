@@ -98,7 +98,6 @@ const decodeToken = db => (req, res) => {
             return res.status(500).json({ message: 'Internal Server Error', success: false, result: null });
         }
     }
-
 }
 
 module.exports = { signup, login, decodeToken, getUser }
