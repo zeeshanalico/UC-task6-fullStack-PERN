@@ -5,7 +5,6 @@ export const server_url = axios.create({
     baseURL: import.meta.env.VITE_BASE_URL,
 })
 
-
 export const loginAsync = createAsyncThunk(
     'auth/loginAsync',
     async ({ email, password }, { rejectWithValue }) => {//rejectedWithValue always goes to .rejected case 

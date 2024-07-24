@@ -25,7 +25,7 @@ const Login = () => {
       return;
     }
     
-    debugger;   
+    // debugger;   
     const resultAction = await dispatch(loginAsync(user));//it will return action
 
     if (loginAsync.fulfilled.match(resultAction)) {//matching the action of fullfilled with action we did
